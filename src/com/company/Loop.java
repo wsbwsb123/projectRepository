@@ -1,7 +1,12 @@
 package com.company;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Loop {
 
@@ -18,7 +23,7 @@ public class Loop {
                         //doSth
                         break;
                     case COUNT_LETTERS:
-                        //doSth
+                        countLetters();
                         break;
                     case COUNT_WORDS:
                         //doSth
@@ -44,6 +49,38 @@ public class Loop {
         }
         scanner.close();
 
+    }
+
+    private void countLetters() {
+        String file = "2.txt";
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(file));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        StringBuilder builder = new StringBuilder();
+        String currentLine = "";
+        try {
+            currentLine = reader.readLine();
+            while (currentLine != null) {
+                builder.append(currentLine);
+                currentLine = reader.readLine();
+            }
+            reader.close();
+            String text = builder.toString();
+            int numberOfLetters = 0;
+
+            for (int i = 0; i < text.length(); i++) {
+                if ("abcdefghijklmnopqrstuvwxyz".contains(Character.toString(text.charAt(i)))) {
+                    numberOfLetters++;
+                }
+            }
+
+            System.out.println("Liczba liter w dokumencie: " + numberOfLetters);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Choice getChoice(Scanner scanner) {
