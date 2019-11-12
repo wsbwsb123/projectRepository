@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Loop {
 
@@ -26,7 +25,7 @@ public class Loop {
                         countLetters();
                         break;
                     case COUNT_WORDS:
-                        //doSth
+                        countWords();
                         break;
                     case COUNT_PUNCTUATION_MARKS:
                         //doSth
@@ -78,6 +77,33 @@ public class Loop {
             }
 
             System.out.println("Liczba liter w dokumencie: " + numberOfLetters);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void countWords() {
+        String file = "2.txt";
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(file));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        
+        String s = "";
+        int wordCount = 0;
+        
+        try {
+            s = reader.readLine();
+            while (s != null) {
+                String[] arr = s.trim().split(" ");
+                wordCount += arr.length;
+                s = reader.readLine();
+            }
+        reader.close();
+            
+        System.out.println("Liczba wyrazów w dokumencie: " + wordCount);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -140,6 +166,4 @@ public class Loop {
             return nr + ") " + description;
         }
     }
-
-
 }
