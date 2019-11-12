@@ -4,7 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 public class Loop {
@@ -19,7 +23,14 @@ public class Loop {
             if (usersChoice != null) {
                 switch (usersChoice) {
                     case DOWNLOAD:
-                        //doSth
+                    FileDownloader downloaded;
+                    try {
+                        downloaded = new FileDownloader(new URL("https://s3.zylowski.net/public/input/2.txt"));        
+                        downloaded.save("2.txt");
+                        System.out.println("plik 2.txt zosta³ pobrany.");
+                    } catch (MalformedURLException ex) {
+                        Logger.getLogger(Loop.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                         break;
                     case COUNT_LETTERS:
                         countLetters();
