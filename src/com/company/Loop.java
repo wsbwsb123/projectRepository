@@ -27,7 +27,7 @@ public class Loop {
                     try {
                         downloaded = new FileDownloader(new URL("https://s3.zylowski.net/public/input/2.txt"));        
                         downloaded.save("2.txt");
-                        System.out.println("plik 2.txt zosta� pobrany.");
+                        System.out.println("plik 2.txt został pobrany.");
                     } catch (MalformedURLException ex) {
                         Logger.getLogger(Loop.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -39,7 +39,7 @@ public class Loop {
                         countWords();
                         break;
                     case COUNT_PUNCTUATION_MARKS:
-                        //doSth
+                        countPunctuations();
                         break;
                     case COUNT_SENTENCES:
                         //doSth
@@ -114,12 +114,46 @@ public class Loop {
             }
         reader.close();
             
-        System.out.println("Liczba wyraz�w w dokumencie: " + wordCount);
+        System.out.println("Liczba wyrazów w dokumencie: " + wordCount);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    private void countPunctuations() {
+    	String file = "2.txt";
+    	BufferReader reader = null;
+    	try {
+    		reader = new BufferedReader(new FileReader(file));
+    	}
+    	catch (FileNotFoundException e) {
+    		e.printStackTrace();
+    	}
+    	StringBuilder builder = new StringBuilder();
+    	String currentLine = "";
+    	try {
+    		currentLine = reader.readLine();
+    		while(currentLine!=null) {
+    			builder.append(currentLine);
+    			currentLine = reader.readLine();
+    		}
+    		reader.close();
+    		String text = builder.toString();
+    		int numberOfPunctuations = 0;
+
+    		for(int i = 0; i < text.length(); i++) {
+    			if(".;,:-?!\"()".contains(Character.toString(text.charAt(i)))) {
+    				numberOfPunctuations++;
+    			}
+    		}
+
+    		System.out.println("Liczba znaków interpunkcyjnych w dokumencie: " + numberOfPunctuations);
+    	}
+    	catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
     private Choice getChoice(Scanner scanner) {
         Choice usersChoice = null;
         int[] possibleChoices = {1, 2, 3, 4, 5, 6, 7, 8};
@@ -134,7 +168,7 @@ public class Loop {
         if (contains) {
             usersChoice = Choice.intToChoice(nr);
         } else {
-            System.out.println("*************************** Wprowadzona liczba musi mieścić być między 1 a 8: ***************************");
+            System.out.println("*************************** Wprowadzona liczba musi mieÅ›ciÄ‡ byÄ‡ miÄ™dzy 1 a 8: ***************************");
             System.out.println();
 
         }
@@ -150,14 +184,14 @@ public class Loop {
 
     private enum Choice {
         DOWNLOAD(1, "Pobierz plik z internetu"),
-        COUNT_LETTERS(2, "Zlicz liczbę liter w pobranym pliku"),
-        COUNT_WORDS(3, "Zlicz liczbę wyrazów w pliku"),
-        COUNT_PUNCTUATION_MARKS(4, "Zlicz liczbę znaków interpunkcyjnych w pliku"),
-        COUNT_SENTENCES(5, "Zlicz liczbę zdań w pliku"),
+        COUNT_LETTERS(2, "Zlicz liczbÄ™ liter w pobranym pliku"),
+        COUNT_WORDS(3, "Zlicz liczbÄ™ wyrazÃ³w w pliku"),
+        COUNT_PUNCTUATION_MARKS(4, "Zlicz liczbÄ™ znakÃ³w interpunkcyjnych w pliku"),
+        COUNT_SENTENCES(5, "Zlicz liczbÄ™ zdaÅ„ w pliku"),
         //DODANE
-        GENERATE_RAPORT(6, "Wygeneruj raport o użyciu liter (A-Z)"),
-        SAVE_STATS(7, "Zapisz statystyki z punktów 2-5 do pliku statystyki.txt"),
-        EXIT(8, "Wyjście z programu");
+        GENERATE_RAPORT(6, "Wygeneruj raport o uÅ¼yciu liter (A-Z)"),
+        SAVE_STATS(7, "Zapisz statystyki z punktÃ³w 2-5 do pliku statystyki.txt"),
+        EXIT(8, "WyjÅ›cie z programu");
 
         private int nr;
         private String description;
