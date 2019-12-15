@@ -25,7 +25,7 @@ public class Loop {
                     case DOWNLOAD:
                     FileDownloader downloaded;
                     try {
-                        downloaded = new FileDownloader(new URL("https://s3.zylowski.net/public/input/2.txt"));        
+                        downloaded = new FileDownloader(new URL("https://s3.zylowski.net/public/input/2.txt"));
                         downloaded.save("2.txt");
                         System.out.println("plik 2.txt został pobrany.");
                     } catch (MalformedURLException ex) {
@@ -42,7 +42,7 @@ public class Loop {
                         countPunctuations();
                         break;
                     case COUNT_SENTENCES:
-                        //doSth
+                        countSentences();
                         break;
                     case GENERATE_RAPORT:
                         //doSth
@@ -92,7 +92,7 @@ public class Loop {
             e.printStackTrace();
         }
     }
-    
+
     private void countWords() {
         String file = "2.txt";
         BufferedReader reader = null;
@@ -101,10 +101,10 @@ public class Loop {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        
+
         String s = "";
         int wordCount = 0;
-        
+
         try {
             s = reader.readLine();
             while (s != null) {
@@ -113,7 +113,7 @@ public class Loop {
                 s = reader.readLine();
             }
         reader.close();
-            
+
         System.out.println("Liczba wyrazów w dokumencie: " + wordCount);
         } catch (IOException e) {
             e.printStackTrace();
@@ -153,7 +153,38 @@ public class Loop {
     		e.printStackTrace();
     	}
     }
-    
+
+    private void countSenteces() {
+      String file = "2.txt";
+      BufferReader reader = null;
+      try {
+        reader = new BufferedReader(new FileReader(file));
+      }
+      catch (FileNotFoundException e) {
+        e.printStackTrace();
+      }
+      StringBuilder builder = new StringBuilder();
+      String currentLine = "";
+      try {
+        currentLine = reader.readLine();
+        while(currentLine !=null) {
+          builder.append(currentLine);
+          currentLine = reader.readLine();
+        }
+        reader.close();
+        String text = builder.toString();
+        int numberOfSentences = 0;
+
+        String[] sentences = text.trim().split(".");
+        numberOfSentences = sentences.length();
+
+        System.out.println("Liczba zdań w dokumencie: " + numberOfSentences);
+      }
+      catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
     private Choice getChoice(Scanner scanner) {
         Choice usersChoice = null;
         int[] possibleChoices = {1, 2, 3, 4, 5, 6, 7, 8};
