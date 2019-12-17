@@ -45,7 +45,7 @@ public class Loop {
                         countSentences();
                         break;
                     case GENERATE_RAPORT:
-                        //doSth
+                        generateReport();
                         break;
                     case SAVE_STATS:
                         //doSth
@@ -93,6 +93,41 @@ public class Loop {
         }
     }
 
+    private void generateReport() {
+        String file = "2.txt";
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(file));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        StringBuilder builder = new StringBuilder();
+        String currentLine = "";
+        try {
+            currentLine = reader.readLine();
+            while (currentLine != null) {
+                builder.append(currentLine);
+                currentLine = reader.readLine();
+            }
+            reader.close();
+            String text = builder.toString();
+            int numberOfLetters = 0;
+            String alphabet = "abcdefghijklmnopqrstuvwxyz";
+            for (int j = 0; j < alphabet.length(); j++) {
+                for (int i = 0; i < text.length(); i++) {
+                    if (Character.toString(alphabet.charAt(j)).equalsIgnoreCase(Character.toString(text.charAt(i)))) {
+                        numberOfLetters++;
+                    }
+                }
+                System.out.println(Character.toString(alphabet.charAt(j)).toUpperCase() + ": " + numberOfLetters);
+                numberOfLetters = 0;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void countWords() {
         String file = "2.txt";
         BufferedReader reader = null;
@@ -122,7 +157,7 @@ public class Loop {
 
     private void countPunctuations() {
     	String file = "2.txt";
-    	BufferReader reader = null;
+    	BufferedReader reader = null;
     	try {
     		reader = new BufferedReader(new FileReader(file));
     	}
@@ -154,9 +189,9 @@ public class Loop {
     	}
     }
 
-    private void countSenteces() {
+    private void countSentences() {
       String file = "2.txt";
-      BufferReader reader = null;
+      BufferedReader reader = null;
       try {
         reader = new BufferedReader(new FileReader(file));
       }
@@ -175,8 +210,8 @@ public class Loop {
         String text = builder.toString();
         int numberOfSentences = 0;
 
-        String[] sentences = text.trim().split(".");
-        numberOfSentences = sentences.length();
+        String[] sentences = text.trim().split("\\.");
+        numberOfSentences = sentences.length;
 
         System.out.println("Liczba zdań w dokumencie: " + numberOfSentences);
       }
