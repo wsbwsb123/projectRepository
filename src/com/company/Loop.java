@@ -33,16 +33,16 @@ public class Loop {
                     }
                         break;
                     case COUNT_LETTERS:
-                        countLetters();
+                        System.out.println("Liczba liter w dokumencie: " + countLetters();
                         break;
                     case COUNT_WORDS:
-                        countWords();
+                        System.out.println("Liczba wyrazów w dokumencie: " + countWords());
                         break;
                     case COUNT_PUNCTUATION_MARKS:
-                        countPunctuations();
+                        System.out.println("Liczba znaków interpunkcyjnych w dokumencie: " + countPunctuations());
                         break;
                     case COUNT_SENTENCES:
-                        countSentences();
+                        System.out.println("Liczba zdań w dokumencie: " + countSentences());
                         break;
                     case GENERATE_RAPORT:
                         generateReport();
@@ -61,7 +61,16 @@ public class Loop {
 
     }
 
-    private void countLetters() {
+    private void SaveStats() {
+        try (PrintWriter out = new PrintWriter("statystyki.txt")) {
+          out.println("Liczba liter w dokumencie: " + countLetters() + "\n");
+          out.println("Liczba wyrazów w dokumencie: " + countWords() + "\n");
+          out.println("Liczba znaków interpunkcyjnych w dokumencie: " + countPunctuations() + "\n");
+          out.println("Liczba zdań w dokumencie: " + countSentences() + "\n");
+        }
+        
+    }
+    private String countLetters() {
         String file = "2.txt";
         BufferedReader reader = null;
         try {
@@ -87,7 +96,7 @@ public class Loop {
                 }
             }
 
-            System.out.println("Liczba liter w dokumencie: " + numberOfLetters);
+            return numberOfLetters;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -128,7 +137,7 @@ public class Loop {
         }
     }
 
-    private void countWords() {
+    private String countWords() {
         String file = "2.txt";
         BufferedReader reader = null;
         try {
@@ -149,13 +158,13 @@ public class Loop {
             }
         reader.close();
 
-        System.out.println("Liczba wyrazów w dokumencie: " + wordCount);
+        return wordCount;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void countPunctuations() {
+    private String countPunctuations() {
     	String file = "2.txt";
     	BufferedReader reader = null;
     	try {
@@ -182,14 +191,14 @@ public class Loop {
     			}
     		}
 
-    		System.out.println("Liczba znaków interpunkcyjnych w dokumencie: " + numberOfPunctuations);
+        return numberOfPunctuations;
     	}
     	catch (IOException e) {
     		e.printStackTrace();
     	}
     }
 
-    private void countSentences() {
+    private String countSentences() {
       String file = "2.txt";
       BufferedReader reader = null;
       try {
@@ -213,7 +222,7 @@ public class Loop {
         String[] sentences = text.trim().split("\\.");
         numberOfSentences = sentences.length;
 
-        System.out.println("Liczba zdań w dokumencie: " + numberOfSentences);
+        return numberOfSentences;
       }
       catch (IOException e) {
         e.printStackTrace();
