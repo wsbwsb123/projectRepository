@@ -1,9 +1,6 @@
 package com.company;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
@@ -13,7 +10,7 @@ import java.util.stream.IntStream;
 
 public class Loop {
 
-    public void start() {
+    public void start() throws IOException {
         Scanner scanner = new Scanner(System.in);
         Choice usersChoice = null;
         while (usersChoice != Choice.EXIT) {
@@ -48,7 +45,7 @@ public class Loop {
                         generateReport();
                         break;
                     case SAVE_STATS:
-                        //doSth
+                        saveStats();
                         break;
                     case EXIT:
                         //doSth
@@ -61,7 +58,24 @@ public class Loop {
 
     }
 
-    private void countLetters() {
+    private void saveStats() throws IOException {
+        String result = "";
+        result += countLetters();
+        result += ". ";
+        result += countWords();
+        result += ". ";
+        result += countPunctuations();
+        result += ". ";
+        result += countSentences();
+        result += ". ";
+        BufferedWriter writer = new BufferedWriter(new FileWriter("statystyki.txt"));
+        writer.write(result);
+
+        writer.close();
+
+    }
+
+    private String countLetters() {
         String file = "2.txt";
         BufferedReader reader = null;
         try {
@@ -71,6 +85,7 @@ public class Loop {
         }
         StringBuilder builder = new StringBuilder();
         String currentLine = "";
+        int numberOfLetters = 0;
         try {
             currentLine = reader.readLine();
             while (currentLine != null) {
@@ -79,7 +94,7 @@ public class Loop {
             }
             reader.close();
             String text = builder.toString();
-            int numberOfLetters = 0;
+
 
             for (int i = 0; i < text.length(); i++) {
                 if ("abcdefghijklmnopqrstuvwxyz".contains(Character.toString(text.charAt(i)))) {
@@ -91,6 +106,7 @@ public class Loop {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return "Liczba liter w dokumencie: " + numberOfLetters;
     }
 
     private void generateReport() {
@@ -128,7 +144,7 @@ public class Loop {
         }
     }
 
-    private void countWords() {
+    private String countWords() {
         String file = "2.txt";
         BufferedReader reader = null;
         try {
@@ -153,9 +169,10 @@ public class Loop {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return "Liczba wyrazów w dokumencie: " + wordCount;
     }
 
-    private void countPunctuations() {
+    private String countPunctuations() {
     	String file = "2.txt";
     	BufferedReader reader = null;
     	try {
@@ -166,6 +183,7 @@ public class Loop {
     	}
     	StringBuilder builder = new StringBuilder();
     	String currentLine = "";
+        int numberOfPunctuations = 0;
     	try {
     		currentLine = reader.readLine();
     		while(currentLine!=null) {
@@ -174,7 +192,7 @@ public class Loop {
     		}
     		reader.close();
     		String text = builder.toString();
-    		int numberOfPunctuations = 0;
+
 
     		for(int i = 0; i < text.length(); i++) {
     			if(".;,:-?!\"()".contains(Character.toString(text.charAt(i)))) {
@@ -187,9 +205,10 @@ public class Loop {
     	catch (IOException e) {
     		e.printStackTrace();
     	}
+    	return "Liczba znaków interpunkcyjnych w dokumencie: " + numberOfPunctuations;
     }
 
-    private void countSentences() {
+    private String countSentences() {
       String file = "2.txt";
       BufferedReader reader = null;
       try {
@@ -200,7 +219,9 @@ public class Loop {
       }
       StringBuilder builder = new StringBuilder();
       String currentLine = "";
-      try {
+        int numberOfSentences = 0;
+
+        try {
         currentLine = reader.readLine();
         while(currentLine !=null) {
           builder.append(currentLine);
@@ -208,7 +229,6 @@ public class Loop {
         }
         reader.close();
         String text = builder.toString();
-        int numberOfSentences = 0;
 
         String[] sentences = text.trim().split("\\.");
         numberOfSentences = sentences.length;
@@ -218,6 +238,7 @@ public class Loop {
       catch (IOException e) {
         e.printStackTrace();
       }
+        return "Liczba zdań w dokumencie: " + numberOfSentences;
     }
 
     private Choice getChoice(Scanner scanner) {
