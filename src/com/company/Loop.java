@@ -1,9 +1,6 @@
 package com.company;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
@@ -13,7 +10,7 @@ import java.util.stream.IntStream;
 
 public class Loop {
 
-    public void start() {
+    public void start() throws IOException {
         Scanner scanner = new Scanner(System.in);
         Choice usersChoice = null;
         while (usersChoice != Choice.EXIT) {
@@ -33,22 +30,22 @@ public class Loop {
                     }
                         break;
                     case COUNT_LETTERS:
-                        System.out.println("Liczba liter w dokumencie: " + countLetters();
+                        countLetters();
                         break;
                     case COUNT_WORDS:
-                        System.out.println("Liczba wyrazów w dokumencie: " + countWords());
+                        countWords();
                         break;
                     case COUNT_PUNCTUATION_MARKS:
-                        System.out.println("Liczba znaków interpunkcyjnych w dokumencie: " + countPunctuations());
+                        countPunctuations();
                         break;
                     case COUNT_SENTENCES:
-                        System.out.println("Liczba zdań w dokumencie: " + countSentences());
+                        countSentences();
                         break;
                     case GENERATE_RAPORT:
                         generateReport();
                         break;
                     case SAVE_STATS:
-                        //doSth
+                        saveStats();
                         break;
                     case EXIT:
                         //doSth
@@ -61,15 +58,23 @@ public class Loop {
 
     }
 
-    private void SaveStats() {
-        try (PrintWriter out = new PrintWriter("statystyki.txt")) {
-          out.println("Liczba liter w dokumencie: " + countLetters() + "\n");
-          out.println("Liczba wyrazów w dokumencie: " + countWords() + "\n");
-          out.println("Liczba znaków interpunkcyjnych w dokumencie: " + countPunctuations() + "\n");
-          out.println("Liczba zdań w dokumencie: " + countSentences() + "\n");
-        }
-        
+    private void saveStats() throws IOException {
+        String result = "";
+        result += countLetters();
+        result += ". ";
+        result += countWords();
+        result += ". ";
+        result += countPunctuations();
+        result += ". ";
+        result += countSentences();
+        result += ". ";
+        BufferedWriter writer = new BufferedWriter(new FileWriter("statystyki.txt"));
+        writer.write(result);
+
+        writer.close();
+
     }
+
     private String countLetters() {
         String file = "2.txt";
         BufferedReader reader = null;
@@ -80,6 +85,7 @@ public class Loop {
         }
         StringBuilder builder = new StringBuilder();
         String currentLine = "";
+        int numberOfLetters = 0;
         try {
             currentLine = reader.readLine();
             while (currentLine != null) {
@@ -88,7 +94,7 @@ public class Loop {
             }
             reader.close();
             String text = builder.toString();
-            int numberOfLetters = 0;
+
 
             for (int i = 0; i < text.length(); i++) {
                 if ("abcdefghijklmnopqrstuvwxyz".contains(Character.toString(text.charAt(i)))) {
@@ -96,10 +102,11 @@ public class Loop {
                 }
             }
 
-            return numberOfLetters;
+            System.out.println("Liczba liter w dokumencie: " + numberOfLetters);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return "Liczba liter w dokumencie: " + numberOfLetters;
     }
 
     private void generateReport() {
@@ -158,10 +165,11 @@ public class Loop {
             }
         reader.close();
 
-        return wordCount;
+        System.out.println("Liczba wyrazów w dokumencie: " + wordCount);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return "Liczba wyrazów w dokumencie: " + wordCount;
     }
 
     private String countPunctuations() {
@@ -175,6 +183,7 @@ public class Loop {
     	}
     	StringBuilder builder = new StringBuilder();
     	String currentLine = "";
+        int numberOfPunctuations = 0;
     	try {
     		currentLine = reader.readLine();
     		while(currentLine!=null) {
@@ -183,7 +192,7 @@ public class Loop {
     		}
     		reader.close();
     		String text = builder.toString();
-    		int numberOfPunctuations = 0;
+
 
     		for(int i = 0; i < text.length(); i++) {
     			if(".;,:-?!\"()".contains(Character.toString(text.charAt(i)))) {
@@ -191,11 +200,12 @@ public class Loop {
     			}
     		}
 
-        return numberOfPunctuations;
+    		System.out.println("Liczba znaków interpunkcyjnych w dokumencie: " + numberOfPunctuations);
     	}
     	catch (IOException e) {
     		e.printStackTrace();
     	}
+    	return "Liczba znaków interpunkcyjnych w dokumencie: " + numberOfPunctuations;
     }
 
     private String countSentences() {
@@ -209,7 +219,9 @@ public class Loop {
       }
       StringBuilder builder = new StringBuilder();
       String currentLine = "";
-      try {
+        int numberOfSentences = 0;
+
+        try {
         currentLine = reader.readLine();
         while(currentLine !=null) {
           builder.append(currentLine);
@@ -217,16 +229,16 @@ public class Loop {
         }
         reader.close();
         String text = builder.toString();
-        int numberOfSentences = 0;
 
         String[] sentences = text.trim().split("\\.");
         numberOfSentences = sentences.length;
 
-        return numberOfSentences;
+        System.out.println("Liczba zdań w dokumencie: " + numberOfSentences);
       }
       catch (IOException e) {
         e.printStackTrace();
       }
+        return "Liczba zdań w dokumencie: " + numberOfSentences;
     }
 
     private Choice getChoice(Scanner scanner) {
