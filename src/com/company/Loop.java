@@ -1,5 +1,10 @@
 package com.company;
 
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -48,7 +53,7 @@ public class Loop {
                         saveStats();
                         break;
                     case EXIT:
-                        //doSth
+                        deleteFiles();
                         break;
                 }
             }
@@ -56,6 +61,19 @@ public class Loop {
         }
         scanner.close();
 
+    }
+    
+    private void deleteFiles() {
+        deleteFile("2.txt");
+        deleteFile("statystyki.txt");
+    }
+    
+    private void deleteFile(String path) {
+        File file = new File(path);
+        if(file.delete())
+            System.out.println("Plik " + file.getName() + " został usunięty.");
+        else
+            System.err.println("Plik " + file.getName() + " nie istnieje.");
     }
 
     private void saveStats() throws IOException {
@@ -299,3 +317,4 @@ public class Loop {
         }
     }
 }
+

@@ -27,6 +27,9 @@ public class FileDownloader {
                 ostream.write(data, 0, byteContent);
             }
             
+            ostream.close();
+            istream.close();
+            
         } catch (IOException ex) {
             Logger.getLogger(FileDownloader.class.getName()).log(Level.SEVERE, null, ex);
         }
