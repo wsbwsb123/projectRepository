@@ -213,7 +213,7 @@ public class Loop {
 
 
     		for(int i = 0; i < text.length(); i++) {
-    			if(".;,:-?!\"()".contains(Character.toString(text.charAt(i)))) {
+    			if(".,?".contains(Character.toString(text.charAt(i)))) {
     				numberOfPunctuations++;
     			}
     		}
