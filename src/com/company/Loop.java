@@ -14,6 +14,8 @@ import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 public class Loop {
+    
+    private String mainFile = "2.txt";
 
     public void start() throws IOException {
         Scanner scanner = new Scanner(System.in);
@@ -25,6 +27,55 @@ public class Loop {
             if (usersChoice != null) {
                 switch (usersChoice) {
                     case DOWNLOAD:
+                        while(true){
+                        System.out.println("Czy pobrać plik z internetu[T/N]");
+
+                        Scanner sc = new Scanner(System.in);
+                        String q1 = sc.nextLine();
+                            if(q1.equals("T") || q1.equals("t")){
+                                System.out.println("Podaj nazwę pliku pod jaką ma zostać zapisany");
+                                sc = new Scanner(System.in);
+                                String fileName = sc.nextLine();
+                                
+                                System.out.println("Podaj adres pliku");
+                                sc = new Scanner(System.in);
+                                String filePath = sc.nextLine();
+                                //System.out.println(filePath);
+                                FileDownloader downloaded;
+                                try {
+                                    downloaded = new FileDownloader(new URL(filePath));
+                                    downloaded.save(fileName);
+                                    System.out.println("plik " + filePath + " został pobrany");
+                                    mainFile = fileName;
+                                } catch (MalformedURLException ex) {
+                                    Logger.getLogger(Loop.class.getName()).log(Level.SEVERE, null, ex);
+                                    System.out.println("Błąd pobierania pliku " + filePath);
+                                }
+                                
+                                break;
+                            }
+                            else if(q1.equals("N") || q1.equals("n")){
+                                System.out.println("Podaj nazwę pliku");
+                                sc = new Scanner(System.in);
+                                String fileName = sc.nextLine();
+                                
+                                File file = new File(fileName);
+                                
+                                if(file.exists()){
+                                    System.out.println("plik został otwarty");
+                                    mainFile = fileName;
+                                }
+                                else {
+                                    System.err.println("plik nie istnieje lub nie może być otwarty");
+                                }
+                                
+                                break;
+                            }
+                            else
+                               System.out.println("Błąd: Nieznana odpowiedź: " + q1); 
+                        }
+                        /*
+                        
                     FileDownloader downloaded;
                     try {
                         downloaded = new FileDownloader(new URL("https://s3.zylowski.net/public/input/2.txt"));
@@ -33,6 +84,7 @@ public class Loop {
                     } catch (MalformedURLException ex) {
                         Logger.getLogger(Loop.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                        */
                         break;
                     case COUNT_LETTERS:
                         countLetters();
@@ -64,7 +116,7 @@ public class Loop {
     }
     
     private void deleteFiles() {
-        deleteFile("2.txt");
+        deleteFile(mainFile);
         deleteFile("statystyki.txt");
     }
     
@@ -94,7 +146,7 @@ public class Loop {
     }
 
     private String countLetters() {
-        String file = "2.txt";
+        String file = mainFile;
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(file));
@@ -128,7 +180,7 @@ public class Loop {
     }
 
     private void generateReport() {
-        String file = "2.txt";
+        String file = mainFile;
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(file));
@@ -182,7 +234,7 @@ public class Loop {
     }
 
     private String countWords() {
-        String file = "2.txt";
+        String file = mainFile;
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(file));
@@ -210,7 +262,7 @@ public class Loop {
     }
 
     private String countPunctuations() {
-    	String file = "2.txt";
+    	String file = mainFile;
     	BufferedReader reader = null;
     	try {
     		reader = new BufferedReader(new FileReader(file));
@@ -246,7 +298,7 @@ public class Loop {
     }
 
     private String countSentences() {
-      String file = "2.txt";
+      String file = mainFile;
       BufferedReader reader = null;
       try {
         reader = new BufferedReader(new FileReader(file));
@@ -307,7 +359,7 @@ public class Loop {
     }
 
     private enum Choice {
-        DOWNLOAD(1, "Pobierz plik z internetu"),
+        DOWNLOAD(1, "Wybierz plik wejściowy"),
         COUNT_LETTERS(2, "Zlicz liczbÄ™ liter w pobranym pliku"),
         COUNT_WORDS(3, "Zlicz liczbÄ™ wyrazÃ³w w pliku"),
         COUNT_PUNCTUATION_MARKS(4, "Zlicz liczbÄ™ znakÃ³w interpunkcyjnych w pliku"),
