@@ -146,7 +146,23 @@ public class Loop {
             reader.close();
             String text = builder.toString();
             int numberOfLetters = 0;
-            String alphabet = "abcdefghijklmnopqrstuvwxyz";
+            
+            System.out.println("Samogłoski: ");
+            String alphabet = "aeiouy";
+            //String alphabet = "abcdefghijklmnopqrstuvwxyz";
+            for (int j = 0; j < alphabet.length(); j++) {
+                for (int i = 0; i < text.length(); i++) {
+                    if (Character.toString(alphabet.charAt(j)).equalsIgnoreCase(Character.toString(text.charAt(i)))) {
+                        numberOfLetters++;
+                    }
+                }
+                System.out.println(Character.toString(alphabet.charAt(j)).toUpperCase() + ": " + numberOfLetters);
+                numberOfLetters = 0;
+            }
+            numberOfLetters = 0;
+            
+            System.out.println("Spółgłoski: ");
+            alphabet = "bcdfghjklmnpqrstvwxz";
             for (int j = 0; j < alphabet.length(); j++) {
                 for (int i = 0; i < text.length(); i++) {
                     if (Character.toString(alphabet.charAt(j)).equalsIgnoreCase(Character.toString(text.charAt(i)))) {
@@ -160,6 +176,9 @@ public class Loop {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        countWords();
+        countSentences();
     }
 
     private String countWords() {
@@ -317,4 +336,3 @@ public class Loop {
         }
     }
 }
-
